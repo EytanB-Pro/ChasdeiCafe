@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Admin – Burrito Orders</title>
+<style>
+:root{--bg:#f6efe2;--card:#fffaf0;--ink:#2a1a0e;--orange:#e8621c;--yellow:#f6a81c;--red:#d63a22;--line:#e3d3b5;--muted:#7a6650;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#241912;--card:#33241a;--ink:#f8ead6;--line:#5a4331;--muted:#c4aa8c}}
+:root[data-theme="dark"]{--bg:#241912;--card:#33241a;--ink:#f8ead6;--line:#5a4331;--muted:#c4aa8c}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Trebuchet MS",Verdana,sans-serif;line-height:1.45}
+.wrap{max-width:720px;margin:0 auto;padding:20px 16px 60px}
+h1,h2{font-family:Impact,"Arial Black",sans-serif;letter-spacing:.03em;text-transform:uppercase;margin:0}
+.hero{text-align:center;padding:18px 0 8px}
+.hero h1{font-size:clamp(40px,11vw,72px);line-height:1;color:var(--yellow);text-shadow:2px 2px 0 var(--orange)}
+.hero h1 span{display:block;color:var(--orange);text-shadow:2px 2px 0 var(--ink)}
+.hero p{font-weight:bold;letter-spacing:.08em;margin:10px 0 0}
+.panel{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:16px;margin-top:18px}
+.base{background:var(--yellow);color:#2a1a0e;border:0}
+.base h2{color:var(--red);font-size:28px}
+.base .row{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.price{font-family:Impact,sans-serif;font-size:46px}
+.base ul{margin:0;padding-left:18px;font-weight:bold}
+.base small{font-weight:normal}
+h2.sec{font-size:22px;margin-bottom:10px}
+label.opt{display:flex;align-items:center;gap:10px;padding:11px 12px;border:2px solid var(--line);border-radius:10px;margin-bottom:8px;cursor:pointer;background:var(--bg)}
+label.opt input{width:20px;height:20px;accent-color:var(--orange)}
+label.opt .amt{margin-left:auto;font-weight:bold;color:var(--orange)}
+label.opt.on{border-color:var(--orange)}
+input[type=text],input[type=tel],textarea,input[type=number]{width:100%;padding:11px;border:2px solid var(--line);border-radius:10px;font:inherit;background:var(--bg);color:var(--ink);margin-bottom:10px}
+.qty{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.qty button{width:40px;height:40px;border-radius:50%;border:2px solid var(--orange);background:none;color:var(--orange);font-size:22px;font-weight:bold}
+.btn{width:100%;padding:15px;border:0;border-radius:12px;background:var(--orange);color:#fff;font:bold 18px Impact,sans-serif;letter-spacing:.05em;text-transform:uppercase;cursor:pointer}
+.btn:disabled{opacity:.5}
+.total{display:flex;justify-content:space-between;font-size:20px;font-weight:bold;margin:6px 0 12px}
+.hint{color:var(--muted);font-size:14px}
+.ok{background:#2f8f4e;color:#fff;border-radius:10px;padding:14px;margin-top:12px;font-weight:bold}
+.err{background:var(--red);color:#fff;border-radius:10px;padding:12px;margin-top:12px}
+.contact{text-align:center;margin-top:22px;font-weight:bold}
+.contact a{color:inherit}
+nav{text-align:center;margin-top:24px;font-size:13px}
+nav a{color:var(--muted)}
+.stats{display:flex;gap:10px;flex-wrap:wrap}
+.stat{flex:1;min-width:100px;background:var(--bg);border:2px solid var(--line);border-radius:10px;padding:10px;text-align:center}
+.stat b{display:block;font-size:26px;color:var(--orange)}
+.order{border:2px solid var(--line);border-radius:12px;padding:12px;margin-top:10px;background:var(--bg)}
+.order.new{border-color:var(--orange)}
+.order.ready{border-color:var(--yellow)}
+.order.done{opacity:.6}
+.order h3{margin:0 0 4px;font-size:17px}
+.tag{display:inline-block;padding:2px 8px;border-radius:99px;font-size:12px;font-weight:bold;background:var(--line);margin:2px 4px 2px 0}
+.tag.no{background:var(--red);color:#fff}
+.tag.add{background:var(--yellow);color:#2a1a0e}
+.acts{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.acts button{padding:8px 12px;border-radius:8px;border:2px solid var(--orange);background:none;color:var(--ink);font:inherit;font-weight:bold;cursor:pointer}
+.acts button.del{border-color:var(--red);color:var(--red)}
+.hide{display:none}
+.login{max-width:340px;margin:40px auto}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero"><h1 style="font-size:44px">Orders</h1><p>Admin dashboard</p></div>
+  <div id="login" class="panel login">
+    <input type="password" id="pw" placeholder="Admin password" autocomplete="current-password">
+    <button class="btn" id="go">Log in</button>
+    <div id="lmsg"></div>
+  </div>
+  <div id="board" class="hide"></div>
+  <nav><a href="/">← Back to menu</a> <span id="out" class="hide"> · <a href="#" id="logout">Log out</a></span></nav>
+</div>
+<script>
+(function(){
+  var $=function(s){return document.querySelector(s)};
+  var money=function(n){return "$"+n.toFixed(2)};
+  var esc=function(s){var d=document.createElement("div");d.textContent=s==null?"":String(s);return d.innerHTML};
+  var pw=sessionStorage.getItem("adminpw")||"", timer=null;
+
+  async function api(method,body){
+    var r=await fetch("/api/orders",{method:method,headers:{"Content-Type":"application/json","x-admin-password":pw},body:body?JSON.stringify(body):undefined});
+    if(r.status===401) throw new Error("auth");
+    if(!r.ok) throw new Error("fail");
+    return r.json();
+  }
+  function render(orders){
+    orders.sort(function(a,b){return (b.createdAt||0)-(a.createdAt||0)});
+    var active=orders.filter(function(o){return o.status!=="done"});
+    var burritos=active.reduce(function(a,o){return a+(o.qty||1)},0);
+    var rev=orders.reduce(function(a,o){return a+(o.total||0)},0);
+    var h='<div class="stats"><div class="stat"><b>'+active.length+'</b>Open orders</div><div class="stat"><b>'+burritos+'</b>Burritos to make</div><div class="stat"><b>'+money(rev)+'</b>Total orders</div></div>';
+    if(!orders.length) h+='<div class="panel hint">No orders yet.</div>';
+    orders.forEach(function(o){
+      var t=o.createdAt?new Date(o.createdAt).toLocaleString():"";
+      var rm=(o.removed||[]), ad=(o.addons||[]);
+      h+='<div class="order '+esc(o.status)+'"><h3>'+esc(o.name)+' — '+(o.qty||1)+'× <span style="float:right">'+money(o.total||0)+'</span></h3>'
+        +'<div class="hint">📞 <a href="tel:'+esc(o.phone)+'">'+esc(o.phone)+'</a> · '+esc(t)+'</div><div>'
+        +rm.map(function(r){return '<span class="tag no">NO '+esc(r)+'</span>'}).join("")
+        +ad.map(function(r){return '<span class="tag add">+ '+esc(r)+'</span>'}).join("")
+        +(!rm.length&&!ad.length?'<span class="tag">Standard</span>':'')+'</div>'
+        +(o.notes?'<div class="hint">📝 '+esc(o.notes)+'</div>':'')
+        +'<div class="acts"><b style="align-self:center">'+esc((o.status||"new").toUpperCase())+'</b>'
+        +'<button data-id="'+esc(o.id)+'" data-s="ready">Ready</button>'
+        +'<button data-id="'+esc(o.id)+'" data-s="done">Picked up</button>'
+        +'<button class="del" data-id="'+esc(o.id)+'" data-s="delete">Delete</button></div></div>';
+    });
+    $("#board").innerHTML=h;
+  }
+  async function load(){
+    try{
+      var d=await api("GET");
+      $("#login").classList.add("hide"); $("#board").classList.remove("hide"); $("#out").classList.remove("hide");
+      render(d.orders);
+      if(!timer) timer=setInterval(load,10000);
+    }catch(e){
+      clearInterval(timer); timer=null;
+      $("#login").classList.remove("hide"); $("#board").classList.add("hide"); $("#out").classList.add("hide");
+      if(pw) $("#lmsg").innerHTML='<div class="err">'+(e.message==="auth"?"Wrong password.":"Couldn\'t load orders.")+'</div>';
+    }
+  }
+  $("#go").onclick=function(){pw=$("#pw").value;sessionStorage.setItem("adminpw",pw);load()};
+  $("#pw").addEventListener("keydown",function(e){if(e.key==="Enter")$("#go").click()});
+  $("#logout").onclick=function(e){e.preventDefault();sessionStorage.removeItem("adminpw");pw="";location.reload()};
+  $("#board").addEventListener("click",async function(e){
+    var b=e.target.closest("button[data-id]"); if(!b)return;
+    try{
+      if(b.dataset.s==="delete"){ if(!confirm("Delete this order?"))return; await api("DELETE",{id:b.dataset.id}); }
+      else await api("PATCH",{id:b.dataset.id,status:b.dataset.s});
+      load();
+    }catch(x){alert("Couldn\'t update the order.")}
+  });
+  if(pw) load();
+})();
+</script>
+</body>
+</html>

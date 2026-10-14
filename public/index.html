@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Breakfast Burrito – Start Your Day Right!</title>
+<style>
+:root{--bg:#f6efe2;--card:#fffaf0;--ink:#2a1a0e;--orange:#e8621c;--yellow:#f6a81c;--red:#d63a22;--line:#e3d3b5;--muted:#7a6650;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#241912;--card:#33241a;--ink:#f8ead6;--line:#5a4331;--muted:#c4aa8c}}
+:root[data-theme="dark"]{--bg:#241912;--card:#33241a;--ink:#f8ead6;--line:#5a4331;--muted:#c4aa8c}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Trebuchet MS",Verdana,sans-serif;line-height:1.45}
+.wrap{max-width:720px;margin:0 auto;padding:20px 16px 60px}
+h1,h2{font-family:Impact,"Arial Black",sans-serif;letter-spacing:.03em;text-transform:uppercase;margin:0}
+.hero{text-align:center;padding:18px 0 8px}
+.hero h1{font-size:clamp(40px,11vw,72px);line-height:1;color:var(--yellow);text-shadow:2px 2px 0 var(--orange)}
+.hero h1 span{display:block;color:var(--orange);text-shadow:2px 2px 0 var(--ink)}
+.hero p{font-weight:bold;letter-spacing:.08em;margin:10px 0 0}
+.panel{background:var(--card);border:2px solid var(--line);border-radius:14px;padding:16px;margin-top:18px}
+.base{background:var(--yellow);color:#2a1a0e;border:0}
+.base h2{color:var(--red);font-size:28px}
+.base .row{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.price{font-family:Impact,sans-serif;font-size:46px}
+.base ul{margin:0;padding-left:18px;font-weight:bold}
+.base small{font-weight:normal}
+h2.sec{font-size:22px;margin-bottom:10px}
+label.opt{display:flex;align-items:center;gap:10px;padding:11px 12px;border:2px solid var(--line);border-radius:10px;margin-bottom:8px;cursor:pointer;background:var(--bg)}
+label.opt input{width:20px;height:20px;accent-color:var(--orange)}
+label.opt .amt{margin-left:auto;font-weight:bold;color:var(--orange)}
+label.opt.on{border-color:var(--orange)}
+input[type=text],input[type=tel],textarea,input[type=number]{width:100%;padding:11px;border:2px solid var(--line);border-radius:10px;font:inherit;background:var(--bg);color:var(--ink);margin-bottom:10px}
+.qty{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.qty button{width:40px;height:40px;border-radius:50%;border:2px solid var(--orange);background:none;color:var(--orange);font-size:22px;font-weight:bold}
+.btn{width:100%;padding:15px;border:0;border-radius:12px;background:var(--orange);color:#fff;font:bold 18px Impact,sans-serif;letter-spacing:.05em;text-transform:uppercase;cursor:pointer}
+.btn:disabled{opacity:.5}
+.total{display:flex;justify-content:space-between;font-size:20px;font-weight:bold;margin:6px 0 12px}
+.hint{color:var(--muted);font-size:14px}
+.ok{background:#2f8f4e;color:#fff;border-radius:10px;padding:14px;margin-top:12px;font-weight:bold}
+.err{background:var(--red);color:#fff;border-radius:10px;padding:12px;margin-top:12px}
+.contact{text-align:center;margin-top:22px;font-weight:bold}
+.contact a{color:inherit}
+nav{text-align:center;margin-top:24px;font-size:13px}
+nav a{color:var(--muted)}
+.stats{display:flex;gap:10px;flex-wrap:wrap}
+.stat{flex:1;min-width:100px;background:var(--bg);border:2px solid var(--line);border-radius:10px;padding:10px;text-align:center}
+.stat b{display:block;font-size:26px;color:var(--orange)}
+.order{border:2px solid var(--line);border-radius:12px;padding:12px;margin-top:10px;background:var(--bg)}
+.order.new{border-color:var(--orange)}
+.order.ready{border-color:var(--yellow)}
+.order.done{opacity:.6}
+.order h3{margin:0 0 4px;font-size:17px}
+.tag{display:inline-block;padding:2px 8px;border-radius:99px;font-size:12px;font-weight:bold;background:var(--line);margin:2px 4px 2px 0}
+.tag.no{background:var(--red);color:#fff}
+.tag.add{background:var(--yellow);color:#2a1a0e}
+.acts{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.acts button{padding:8px 12px;border-radius:8px;border:2px solid var(--orange);background:none;color:var(--ink);font:inherit;font-weight:bold;cursor:pointer}
+.acts button.del{border-color:var(--red);color:var(--red)}
+.hide{display:none}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ============ CUSTOMER PAGE ============ -->
+<div id="shop">
+  <div class="hero">
+    <h1>Breakfast<span>Burrito</span></h1>
+    <p>— START YOUR DAY RIGHT! —</p>
+  </div>
+
+  <div class="panel base">
+    <h2>The Base Burrito</h2>
+    <div class="row">
+      <div class="price">$7.00</div>
+      <ul>
+        <li>Eggs <small>(fluffy, scrambled)</small></li>
+        <li>Potatoes <small>(crispy, cubed)</small></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2 class="sec">Upgrades &amp; Add-Ons</h2>
+    <div class="opt-static" style="display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr))">
+      <div class="stat">🌶️ <b style="font-size:16px;color:var(--ink)">Make it Spicy!</b><span class="hint">Add Sriracha kick</span><br><b>FREE</b></div>
+      <div class="stat">🧀 <b style="font-size:16px;color:var(--ink)">Add Cheese</b><span class="hint">Extra melted cheddar</span><br><b>FREE</b></div>
+      <div class="stat">⭐ <b style="font-size:16px;color:var(--ink)">Chasdei Sauce</b><span class="hint">Our special mayo &amp; ketchup sauce</span><br><b>FREE</b></div>
+    </div>
+  </div>
+
+  <form id="orderForm" class="panel" onsubmit="return false">
+    <h2 class="sec">Preorder Yours</h2>
+
+    <div class="hint" style="margin-bottom:6px">Uncheck anything you want left off:</div>
+    <label class="opt on"><input type="checkbox" class="keep" data-name="Eggs" checked> Eggs <span class="amt">included</span></label>
+    <label class="opt on"><input type="checkbox" class="keep" data-name="Potatoes" checked> Potatoes <span class="amt">included</span></label>
+
+    <div class="hint" style="margin:12px 0 6px">Add-ons:</div>
+    <label class="opt"><input type="checkbox" class="addon" data-name="Spicy (Sriracha)" data-price="0"> 🌶️ Make it Spicy! <span class="amt">free</span></label>
+    <label class="opt"><input type="checkbox" class="addon" data-name="Extra Cheese" data-price="0"> 🧀 Add Cheese <span class="amt">free</span></label>
+    <label class="opt"><input type="checkbox" class="addon" data-name="Chasdei Sauce" data-price="0"> ⭐ Chasdei Sauce <span class="hint">(mayo &amp; ketchup)</span> <span class="amt">free</span></label>
+
+    <div class="qty">
+      <span><b>Quantity</b></span>
+      <button type="button" id="minus">−</button><b id="qty">1</b><button type="button" id="plus">+</button>
+    </div>
+
+    <input type="text" id="name" placeholder="Your name" maxlength="60" autocomplete="name">
+    <input type="tel" id="phone" placeholder="Phone number" maxlength="25" autocomplete="tel">
+    <textarea id="notes" rows="2" placeholder="Notes / pickup time (optional)" maxlength="200"></textarea>
+
+    <div class="total"><span>Total</span><span id="total">$7.00</span></div>
+    <button class="btn" id="submit">Place Preorder</button>
+    <div id="msg"></div>
+  </form>
+
+  <div class="contact">
+    Eytan Bentsvi &nbsp;|&nbsp; Elchanan Andron<br>
+    <a href="tel:4243555710">424 355 5710</a> &nbsp;|&nbsp; <a href="tel:8182994477">818 299 4477</a>
+  </div>
+</div>
+
+</div>
+<script>
+(function(){
+  var BASE = 7.00;
+  var $ = function(s){return document.querySelector(s)};
+  var $$ = function(s){return Array.prototype.slice.call(document.querySelectorAll(s))};
+  var qty = 1;
+  var money = function(n){return "$"+n.toFixed(2)};
+  var esc = function(s){var d=document.createElement("div");d.textContent=s==null?"":String(s);return d.innerHTML};
+
+  function calc(){
+    var t = BASE*qty;
+    $("#total").textContent = money(t);
+    $$("label.opt").forEach(function(l){l.classList.toggle("on", l.querySelector("input").checked)});
+    return t;
+  }
+  $$("#orderForm input").forEach(function(i){i.addEventListener("change",calc)});
+  $("#minus").onclick=function(){qty=Math.max(1,qty-1);$("#qty").textContent=qty;calc()};
+  $("#plus").onclick=function(){qty=Math.min(20,qty+1);$("#qty").textContent=qty;calc()};
+
+  $("#submit").onclick = async function(){
+    var msg=$("#msg"); msg.innerHTML="";
+    var name=$("#name").value.trim(), phone=$("#phone").value.trim();
+    if(!name||!phone){msg.innerHTML='<div class="err">Please enter your name and phone number.</div>';return}
+    var order={name:name,phone:phone,notes:$("#notes").value.trim(),
+      removed:$$(".keep").filter(function(c){return !c.checked}).map(function(c){return c.dataset.name}),
+      addons:$$(".addon:checked").map(function(c){return c.dataset.name}),qty:qty};
+    $("#submit").disabled=true;
+    try{
+      var r=await fetch("/api/orders",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(order)});
+      if(!r.ok) throw new Error();
+      msg.innerHTML='<div class="ok">✅ Thanks '+esc(name)+'! Your preorder is in. We\'ll reach out at '+esc(phone)+'.</div>';
+      $("#orderForm").reset(); qty=1; $("#qty").textContent=1; calc();
+    }catch(e){
+      msg.innerHTML='<div class="err">Couldn\'t save your order. Please try again or call us.</div>';
+    }
+    $("#submit").disabled=false;
+  };
+  calc();
+})();
+</script>
+</body>
+</html>
